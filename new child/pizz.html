@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Master Mind Kids Hub - Pizza & Brain Adventures</title>
+    <!-- Google Fonts for Friendly Child-Friendly Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0f172a 100%);
+            --card-bg: #1e293b;
+            --primary-blue: #38bdf8;
+            --sunny-yellow: #facc15;
+            --emerald-green: #10b981;
+            --candy-pink: #f43f5e;
+            --vibrant-purple: #a855f7;
+            --warm-orange: #fb923c;
+            --font-main: 'Fredoka', 'Quicksand', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 100% SCREEN VIEWPORT LOCK - NO SCROLLBARS, NO VERTICAL SCROLLING */
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden; /* Fixes up/down scrolling throughout the app */
+            background: var(--bg-gradient);
+            font-family: var(--font-main);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        /* Ambient floating sparkle stars background */
+        .stars-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.25;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 100px 150px, #facc15, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 250px 80px, #38bdf8, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 450px 220px, #f43f5e, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 700px 120px, #a855f7, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 800px 300px;
+        }
+
+        /* App Main Shell: Always fits within 98vh without scrolling */
+        .hub-container {
+            width: 98vw;
+            max-width: 1080px;
+            height: 98vh;
+            height: 98dvh;
+            max-height: 98dvh;
+            background: rgba(30, 41, 59, 0.95);
+            border: 3px solid var(--primary-blue);
+            border-radius: 18px;
+            padding: 10px 14px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.2);
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        /* Top Global Compact Navigation Bar */
+        .global-top-bar {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 12px;
+            background: rgba(15, 23, 42, 0.85);
+            border-radius: 12px;
+            border: 2px solid #334155;
+            margin-bottom: 6px;
+            gap: 8px;
+            height: 48px;
+        }
+
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: clamp(16px, 2vh, 20px);
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+            cursor: pointer;
+        }
+
+        .top-stats {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-badge {
+            background: #0f172a;
+            border: 2px solid var(--sunny-yellow);
+            color: var(--sunny-yellow);
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Tactile child-friendly buttons */
+        .kids-btn {
+            font-family: var(--font-main);
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.28);
+        }
+
+        .kids-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.28);
+        }
+
+        .btn-exit {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: 1px solid #fca5a5;
+            padding: 5px 12px;
+            font-size: 13px;
+        }
+        .btn-exit:hover {
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            transform: translateY(-1px);
+        }
+
+        .btn-sound {
+            background: #334155;
+            color: #cbd5e1;
+            border: 1px solid #475569;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-fullscreen {
+            background: #334155;
+            color: #e2e8f0;
+            border: 1px solid #475569;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-primary { background: linear-gradient(135deg, #0284c7, #0ea5e9); color: white; }
+        .btn-green { background: linear-gradient(135deg, #059669, #10b981); color: white; border-bottom: 2px solid #047857; }
+        .btn-orange { background: linear-gradient(135deg, #ea580c, #f97316); color: white; border-bottom: 2px solid #c2410c; }
+        .btn-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; border-bottom: 2px solid #6d28d9; }
+        .btn-yellow { background: linear-gradient(135deg, #d97706, #facc15); color: #1e1b4b; border-bottom: 2px solid #b45309; }
+
+        /* --- HOME MENU DASHBOARD (FULL SCREEN FIT) --- */
+        #menu-view {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .hero-banner {
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(168, 85, 247, 0.12));
+            border: 2px dashed rgba(56, 189, 248, 0.35);
+            border-radius: 14px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .hero-banner h2 {
+            margin: 0;
+            font-size: clamp(17px, 2.3vh, 23px);
+            color: var(--sunny-yellow);
+            text-shadow: 0 2px 8px rgba(250, 204, 21, 0.35);
+        }
+
+        .hero-banner p {
+            margin: 2px 0 0 0;
+            color: #cbd5e1;
+            font-size: clamp(11px, 1.4vh, 13px);
+        }
+
+        .avatar-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .avatar-option {
+            font-size: 20px;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .avatar-option:hover { transform: scale(1.15); border-color: var(--primary-blue); }
+        .avatar-option.selected {
+            border-color: var(--sunny-yellow);
+            background: rgba(250, 204, 21, 0.2);
+            box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+            transform: scale(1.08);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            flex: 1;
+            min-height: 0;
+            margin-bottom: 4px;
+        }
+
+        .game-card {
+            background: #0f172a;
+            border-radius: 14px;
+            padding: 10px 12px;
+            text-align: center;
+            border: 2px solid #334155;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: var(--primary-blue);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.25);
+        }
+
+        .game-card-icon {
+            font-size: clamp(26px, 4.2vh, 44px);
+            margin: 2px 0;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+            transition: transform 0.25s;
+        }
+        .game-card:hover .game-card-icon {
+            transform: scale(1.15) rotate(4deg);
+        }
+
+        .game-card h3 {
+            margin: 2px 0 4px 0;
+            font-size: clamp(13px, 1.8vh, 16px);
+            color: #ffffff;
+        }
+
+        .game-card p {
+            font-size: 11px;
+            color: #94a3b8;
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--candy-pink);
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- ALL GAME PANELS (FIT 100% IN VIEWPORT, ZERO SCROLLING) --- */
+        .game-panel {
+            flex: 1;
+            min-height: 0;
+            display: none;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 14px;
+            padding: 8px 12px;
+            position: relative;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            animation: fadeIn 0.25s ease;
+        }
+        .game-panel.active {
+            display: flex;
+        }
+
+        .game-hud {
+            flex-shrink: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 12px;
+            background: #1e293b;
+            border-radius: 10px;
+            border: 1px solid #475569;
+            margin-bottom: 6px;
+            gap: 8px;
+            height: 42px;
+        }
+
+        .hud-left, .hud-center, .hud-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hud-title {
+            font-size: clamp(14px, 1.8vh, 17px);
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .hud-pill {
+            background: #0f172a;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid #475569;
+            color: var(--sunny-yellow);
+        }
+
+        .game-instructions {
+            flex-shrink: 0;
+            color: #94a3b8;
+            font-size: clamp(11px, 1.4vh, 13px);
+            margin: 0 0 6px 0;
+            text-align: center;
+        }
+
+        /* --- MODULE 3: SPOT THE DIFFERENCE (RESPONSIVE VIEWPORT FIT) --- */
+        .spot-canvas-container {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .spot-box {
+            position: relative;
+            height: 100%;
+            max-height: calc(100vh - 220px);
+            aspect-ratio: 440 / 290;
+            max-width: 48%;
+            background: #1e293b;
+            border: 3px solid #475569;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .spot-box.target-box {
+            border-color: var(--primary-blue);
+        }
+
+        .spot-box-label {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: rgba(15, 23, 42, 0.85);
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #e2e8f0;
+            border: 1px solid #475569;
+            z-index: 5;
+        }
+
+        .scene-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Clickable Spot Areas (Percentage based, scales accurately at any viewport size) */
+        .difference-target {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 6;
+            transition: transform 0.2s;
+        }
+        .difference-target:hover { transform: scale(1.1); }
+
+        .found-circle {
+            position: absolute;
+            border: 3px solid var(--emerald-green);
+            background: rgba(16, 185, 129, 0.25);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 8;
+            animation: pulseGlow 1.2s infinite alternate, popIn 0.3s ease;
+        }
+
+        .found-star {
+            position: absolute;
+            font-size: 18px;
+            top: -12px;
+            right: -12px;
+            animation: bounceStar 0.8s infinite alternate;
+        }
+
+        .spot-controls {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 6px;
+            justify-content: center;
+        }
+
+        .level-progress-bar {
+            width: 200px;
+            height: 10px;
+            background: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            overflow: hidden;
+            display: flex;
+        }
+        .level-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* --- MODULE 4: MEMORY MATRIX & BRAIN FRAMEWORK (VIEWPORT FIT) --- */
+        .memory-nav-tabs {
+            flex-shrink: 0;
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid #334155;
+            padding: 5px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            font-family: var(--font-main);
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--vibrant-purple);
+            color: white;
+            border-color: #c084fc;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+        }
+
+        .speed-meter-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #0f172a;
+            padding: 3px 10px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .speed-badge {
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+        .speed-badge.slow { background: #065f46; color: #6ee7b7; }
+        .speed-badge.medium { background: #854d0e; color: #fde047; }
+        .speed-badge.fast { background: #991b1b; color: #fca5a5; }
+        .speed-badge.super { background: #581c87; color: #e9d5ff; }
+
+        /* Compact Responsive Matrix Grid */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, clamp(52px, 8.5vh, 72px));
+            gap: 8px;
+            margin: 6px auto;
+        }
+
+        .matrix-tile {
+            width: clamp(52px, 8.5vh, 72px);
+            height: clamp(52px, 8.5vh, 72px);
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.15s, background-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 0 #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .matrix-tile:hover { border-color: var(--primary-blue); transform: translateY(-2px); }
+        .matrix-tile:active { transform: translateY(2px); box-shadow: 0 1px 0 #0f172a; }
+
+        .matrix-tile.lit {
+            background: radial-gradient(circle, #38bdf8 20%, #0284c7 100%) !important;
+            border-color: #e0f2fe !important;
+            box-shadow: 0 0 20px #38bdf8, 0 3px 0 #0369a1 !important;
+            transform: scale(1.06) !important;
+        }
+
+        .matrix-tile.correct {
+            background: radial-gradient(circle, #34d399 20%, #059669 100%) !important;
+            border-color: #a7f3d0 !important;
+            box-shadow: 0 0 25px #10b981 !important;
+            transform: scale(1.08) !important;
+        }
+
+        .matrix-tile.wrong {
+            background: radial-gradient(circle, #f87171 20%, #dc2626 100%) !important;
+            border-color: #fecaca !important;
+            box-shadow: 0 0 25px #ef4444 !important;
+            animation: shake 0.35s ease;
+        }
+
+        /* Compact Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, clamp(48px, 7.8vh, 68px));
+            gap: 8px;
+            margin: 6px auto;
+        }
+
+        .memory-card {
+            width: clamp(48px, 7.8vh, 68px);
+            height: clamp(48px, 7.8vh, 68px);
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: clamp(22px, 3.5vh, 32px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 3px 0 #0f172a;
+        }
+
+        .memory-card.hidden {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: transparent;
+        }
+        .memory-card.hidden::after { content: "❓"; color: #94a3b8; font-size: 20px; }
+        .memory-card.matched { background: rgba(16, 185, 129, 0.2); border-color: var(--emerald-green); pointer-events: none; }
+
+        /* Compact Simon Grid */
+        .simon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, clamp(75px, 11vh, 105px));
+            gap: 10px;
+            margin: 6px auto;
+        }
+
+        .simon-pad {
+            width: clamp(75px, 11vh, 105px);
+            height: clamp(75px, 11vh, 105px);
+            border-radius: 16px;
+            cursor: pointer;
+            border: 3px solid rgba(255,255,255,0.2);
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.3);
+        }
+        .simon-pad:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.3); }
+        .simon-red { background: #b91c1c; }
+        .simon-red.lit { background: #f87171; box-shadow: 0 0 25px #ef4444; }
+        .simon-blue { background: #1d4ed8; }
+        .simon-blue.lit { background: #60a5fa; box-shadow: 0 0 25px #3b82f6; }
+        .simon-green { background: #15803d; }
+        .simon-green.lit { background: #4ade80; box-shadow: 0 0 25px #22c55e; }
+        .simon-yellow { background: #a16207; }
+        .simon-yellow.lit { background: #fde047; box-shadow: 0 0 25px #eab308; }
+
+        /* --- CELEBRATION BALLOONS (POPPABLE FOR ATTRACTION) --- */
+        #balloon-container {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 9999;
+        }
+
+        .celebration-balloon {
+            position: absolute;
+            bottom: -120px;
+            width: 55px;
+            height: 72px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            cursor: pointer;
+            pointer-events: auto;
+            animation: floatUp 4.2s ease-out forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+
+        .celebration-balloon::before {
+            content: "";
+            position: absolute;
+            top: 10px; left: 10px; width: 14px; height: 20px;
+            background: rgba(255, 255, 255, 0.45);
+            border-radius: 50%;
+            transform: rotate(-25deg);
+        }
+
+        .celebration-balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -30px; left: 50%; width: 2px; height: 32px;
+            background: rgba(255, 255, 255, 0.7);
+            transform: translateX(-50%);
+        }
+
+        .balloon-knot {
+            position: absolute;
+            bottom: -4px; left: 50%; width: 8px; height: 6px;
+            background: inherit; border-radius: 2px;
+            transform: translateX(-50%);
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* Compact Victory Modal */
+        .celebration-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.85);
+            background: #1e293b;
+            border: 3px solid var(--sunny-yellow);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(250, 204, 21, 0.35);
+            z-index: 10000;
+            max-width: 400px;
+            width: 88%;
+            opacity: 0;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .celebration-modal.show {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        .celebration-modal h2 { font-size: 24px; color: var(--sunny-yellow); margin: 0 0 6px 0; }
+        .celebration-modal p { font-size: 15px; color: #cbd5e1; margin: 0 0 16px 0; }
+
+        /* --- MODULE 1: PHONICS COMPACT VIEWPORT FIT --- */
+        .falling-letter {
+            position: absolute;
+            font-size: clamp(38px, 6vh, 48px);
+            font-weight: 700;
+            color: var(--candy-pink);
+            text-shadow: 0 3px 8px rgba(0,0,0,0.8);
+            transform: translateX(-50%);
+            cursor: pointer;
+        }
+
+        .touch-keyboard {
+            flex-shrink: 0;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 6px;
+            max-width: 520px;
+        }
+        .key-btn {
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 8px;
+            width: clamp(34px, 4.5vw, 42px);
+            height: clamp(34px, 4.5vw, 42px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #0f172a;
+        }
+        .key-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #0f172a; }
+
+        /* --- MODULE 2: PUPPY PATHFINDER COMPACT CANVAS --- */
+        #maze-canvas {
+            background: #1e293b;
+            border: 3px solid #334155;
+            border-radius: 12px;
+            cursor: crosshair;
+            touch-action: none;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+            max-width: 100%;
+            max-height: calc(100vh - 230px);
+            width: auto;
+            height: auto;
+            aspect-ratio: 600 / 260;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.95; }
+            50% { transform: translateY(-55vh) rotate(6deg); }
+            100% { transform: translateY(-115vh) rotate(-8deg); opacity: 1; }
+        }
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+            to { box-shadow: 0 0 20px rgba(16, 185, 129, 0.9); }
+        }
+        @keyframes bounceStar {
+            from { transform: translateY(0); }
+            to { transform: translateY(-6px) rotate(12deg); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        /* Small screen adaptive scaling */
+        @media (max-width: 768px) {
+            .hub-container {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                border-radius: 0;
+                border: none;
+                padding: 6px 8px;
+            }
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .spot-canvas-container {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .spot-box {
+                max-width: 96%;
+                max-height: calc(45vh - 100px);
+            }
+            .brand-title span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="stars-bg"></div>
+
+<!-- Celebration Balloon Overlay for Joyful Child Feedback -->
+<div id="balloon-container"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Victory / Next Level Modal Dialog -->
+<div id="celebration-modal" class="celebration-modal">
+    <div id="modal-icon" style="font-size: 48px; margin-bottom: 2px;">🎈🎉⭐</div>
+    <h2 id="modal-title">Super Job!</h2>
+    <p id="modal-desc">You completed the puzzle!</p>
+    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button class="kids-btn btn-exit" onclick="exitToMenu()">🚪 Exit to Menu</button>
+        <button id="modal-next-btn" class="kids-btn btn-green" onclick="handleModalNext()">Next Level ➡️</button>
+    </div>
+</div>
+
+<div class="hub-container">
+    <!-- Top Global HUD / Navigation Bar with Exit, Sound & Fullscreen -->
+    <div class="global-top-bar">
+        <div class="brand-title" onclick="exitToMenu()">
+            <span style="font-size: 22px;">🍕</span>
+            <div>Master Mind Kids <span>Hub</span></div>
+        </div>
+
+        <div class="top-stats">
+            <div class="stat-badge" title="Total Stars Earned">
+                ⭐ <span id="global-stars">0</span> Stars
+            </div>
+            <button class="kids-btn btn-sound" id="sound-btn" onclick="toggleSound()">
+                <span id="sound-icon">🔊</span>
+            </button>
+            <button class="kids-btn btn-fullscreen" onclick="toggleFullscreen()" title="Play Fullscreen">
+                ⛶ Screen
+            </button>
+            <button class="kids-btn btn-exit" id="global-exit-btn" onclick="exitToMenu()" style="display: none;">
+                🚪 Exit
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 🏠 HOME MENU SCREEN (FITS SINGLE VIEWPORT)-->
+    <!-- ========================================== -->
+    <div id="menu-view">
+        <div class="hero-banner">
+            <h2>Welcome to Cognitive Fun World! 🚀</h2>
+            <p>Pick a fun brain game below to start playing, learning, and earning shiny golden stars!</p>
+            <div class="avatar-bar">
+                <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">Buddy:</span>
+                <div class="avatar-option selected" onclick="selectAvatar('🐶')">🐶</div>
+                <div class="avatar-option" onclick="selectAvatar('🐱')">🐱</div>
+                <div class="avatar-option" onclick="selectAvatar('🐻')">🐻</div>
+                <div class="avatar-option" onclick="selectAvatar('🦁')">🦁</div>
+                <div class="avatar-option" onclick="selectAvatar('🦊')">🦊</div>
+            </div>
+        </div>
+
+        <div class="games-grid">
+            <!-- Game 1: Spot the Difference (Pizza & Friends) -->
+            <div class="game-card" onclick="openGame(3)">
+                <span class="card-badge">5 Levels</span>
+                <div class="game-card-icon">🍕🔍</div>
+                <h3>Spot Differences</h3>
+                <p>Find hidden items on pizzas, bakery treats, safari animals, and rockets!</p>
+                <button class="kids-btn btn-yellow" style="width: 100%;">Play Pizza Detective</button>
+            </div>
+
+            <!-- Game 2: Memory Matrix & Brain Framework -->
+            <div class="game-card" onclick="openGame(4)">
+                <span class="card-badge" style="background: var(--vibrant-purple);">Balloons</span>
+                <div class="game-card-icon">🧠🎈</div>
+                <h3>Memory Suite</h3>
+                <p>Starts slow, accelerates! Pop floating balloons, flip cards & musical bells!</p>
+                <button class="kids-btn btn-purple" style="width: 100%;">Play Memory</button>
+            </div>
+
+            <!-- Game 3: Puppy Pathfinder Maze -->
+            <div class="game-card" onclick="openGame(2)">
+                <span class="card-badge" style="background: var(--emerald-green);">Motor Skills</span>
+                <div class="game-card-icon">🐶🏡</div>
+                <h3>Puppy Pathfinder</h3>
+                <p>Guide puppy through 3 maze tracks safely home while collecting treats!</p>
+                <button class="kids-btn btn-green" style="width: 100%;">Play Puppy Maze</button>
+            </div>
+
+            <!-- Game 4: Phonics & Letter Reversal -->
+            <div class="game-card" onclick="openGame(1)">
+                <span class="card-badge" style="background: var(--primary-blue);">Shield</span>
+                <div class="game-card-icon">🔤🛡️</div>
+                <h3>Phonics Shield</h3>
+                <p>Blast confusing letters (b, d, p, q) before they touch ground!</p>
+                <button class="kids-btn btn-primary" style="width: 100%;">Play Phonics</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🍕 MODULE 3: SPOT THE DIFFERENCE (MULTI-LEVEL + NEXT)   -->
+    <!-- ======================================================== -->
+    <div id="module-3" class="game-panel">
+        <div class="game-hud">
+            <div class="hud-left">
+                <button class="kids-btn btn-exit" onclick="exitToMenu()">⬅ Exit</button>
+                <div class="hud-title">🍕 Spot Differences</div>
+            </div>
+            <div class="hud-center">
+                <div class="hud-pill">Level: <span id="m3-level-num">1</span> / 5</div>
+                <div class="hud-pill" style="color: var(--emerald-green);">
+                    Found: <span id="m3-found-count">0</span> / <span id="m3-total-count">3</span>
+                </div>
+            </div>
+            <div class="hud-right">
+                <button class="kids-btn btn-yellow" onclick="giveSpotHint()">💡 Hint</button>
+                <button class="kids-btn btn-primary" onclick="resetSpotPuzzle()">🔄 Reset</button>
+            </div>
+        </div>
+
+        <div class="game-instructions">
+            Find all <b>3 secret differences</b> on the Right Box and tap them! Complete to advance!
+        </div>
+
+        <div class="spot-canvas-container">
+            <!-- Left Box: Original Master Reference -->
+            <div class="spot-box" id="spot-box-left">
+                <div class="spot-box-label">Original Picture</div>
+                <div id="spot-svg-left" class="scene-svg"></div>
+            </div>
+
+            <!-- Right Box: Interactive Puzzle with Target Spots -->
+            <div class="spot-box target-box" id="spot-box-right" onclick="handleSpotBoxClick(event)">
+                <div class="spot-box-label" style="border-color: var(--primary-blue); color: var(--primary-blue);">Tap Differences Here! 🔍</div>
+                <div id="spot-svg-right" class="scene-svg"></div>
+                <div id="spot-targets-container"></div>
+                <div id="spot-found-layer"></div>
+            </div>
+        </div>
+
+        <div class="spot-controls">
+            <span style="font-size: 13px; color: #94a3b8; font-weight: 700;">Progress:</span>
+            <div class="level-progress-bar">
+                <div id="m3-progress-bar" class="level-progress-fill"></div>
+            </div>
+            <button id="m3-next-btn" class="kids-btn btn-green" onclick="nextSpotLevel()" style="display: none;">
+                Next Level ➡️
+            </button>
+        </div>
+        <div id="m3-status-msg" style="margin-top: 4px; font-weight: 700; color: var(--emerald-green); font-size: 13px; min-height: 20px;"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🧠 MODULE 4: MEMORY MATRIX & BRAIN FRAMEWORK             -->
+    <!-- ======================================================== -->
+    <div id="module-4" class="game-panel">
+        <div class="game-hud">
+            <div class="hud-left">
+                <button class="kids-btn btn-exit" onclick="exitToMenu()">⬅ Exit</button>
+                <div class="hud-title">🧠 Memory Matrix</div>
+            </div>
+            <div class="hud-center">
+                <div class="hud-pill">Level: <span id="m4-level-num">1</span></div>
+                <div class="speed-meter-container">
+                    <span>Tempo:</span>
+                    <span id="m4-speed-badge" class="speed-badge slow">🐢 Slow & Gentle</span>
+                </div>
+            </div>
+            <div class="hud-right">
+                <div class="hud-pill" style="color: var(--sunny-yellow);">Streak: <span id="m4-streak">0</span> 🔥</div>
+            </div>
+        </div>
+
+        <!-- Brain Framework Navigation Tabs -->
+        <div class="memory-nav-tabs">
+            <button class="tab-btn active" id="tab-matrix" onclick="switchMemoryMode('matrix')">1. Tile Pattern</button>
+            <button class="tab-btn" id="tab-cards" onclick="switchMemoryMode('cards')">2. Emoji Cards</button>
+            <button class="tab-btn" id="tab-simon" onclick="switchMemoryMode('simon')">3. Musical Bells</button>
+        </div>
+
+        <!-- Mode A: Spatial Pattern Matrix (Starts Slow -> Speeds Up -> Balloon Celebration) -->
+        <div id="m4-mode-matrix" style="width: 100%; flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+            <div class="game-instructions" id="m4-instruction">
+                Watch the tiles light up in order, then tap the exact same tiles back!
+            </div>
+
+            <div class="matrix-grid" id="matrix-grid">
+                <div class="matrix-tile" onclick="matrixTileClick(0)"></div>
+                <div class="matrix-tile" onclick="matrixTileClick(1)"></div>
+                <div class="matrix-tile" onclick="matrixTileClick(2)"></div>
+                <div class="matrix-tile" onclick="matrixTileClick(3)"></div>
+                <div class="matrix-tile" onclick="matrixTileClick(4)"></div>
+                <div class="matrix-tile" onclick="matrixTileClick(5)"></div>
+                <div class="matrix-tile" onclick="matrixTileClick(6)"></div>
+                <div class="matrix-tile" onclick="matrixTileClick(7)"></div>
+                <div class="matrix-tile" onclick="matrixTileClick(8)"></div>
+            </div>
+
+            <div id="m4-status-text" style="font-size: 15px; font-weight: 700; color: var(--sunny-yellow); min-height: 22px;">
+                Press "Start Memory Pattern" to begin!
+            </div>
+
+            <div style="display: flex; gap: 8px; justify-content: center;">
+                <button id="m4-start-btn" class="kids-btn btn-purple" onclick="startMatrixGame()">
+                    ▶ Start Memory Pattern
+                </button>
+                <button id="m4-replay-btn" class="kids-btn btn-primary" onclick="replayMatrixPattern()" style="display: none;">
+                    👁️ Replay
+                </button>
+            </div>
+        </div>
+
+        <!-- Mode B: Emoji Card Flip Match -->
+        <div id="m4-mode-cards" style="width: 100%; flex: 1; min-height: 0; display: none; flex-direction: column; justify-content: space-around; align-items: center;">
+            <div class="game-instructions">
+                Flip the cards to discover matching pairs of pizzas, treats, and animal pals!
+            </div>
+            <div class="cards-grid" id="cards-grid"></div>
+            <div id="cards-status" style="font-size: 14px; font-weight: 700; color: var(--emerald-green); min-height: 20px;"></div>
+            <button class="kids-btn btn-green" onclick="initCardsGame()">🔄 New Shuffle</button>
+        </div>
+
+        <!-- Mode C: Musical Simon -->
+        <div id="m4-mode-simon" style="width: 100%; flex: 1; min-height: 0; display: none; flex-direction: column; justify-content: space-around; align-items: center;">
+            <div class="game-instructions">
+                Listen to the musical bells and watch the colors flash, then play them back!
+            </div>
+            <div class="simon-grid">
+                <div class="simon-pad simon-red" id="simon-0" onclick="simonPadClick(0)">🔔</div>
+                <div class="simon-pad simon-blue" id="simon-1" onclick="simonPadClick(1)">🎵</div>
+                <div class="simon-pad simon-green" id="simon-2" onclick="simonPadClick(2)">🎶</div>
+                <div class="simon-pad simon-yellow" id="simon-3" onclick="simonPadClick(3)">✨</div>
+            </div>
+            <div id="simon-status" style="font-size: 14px; font-weight: 700; color: var(--sunny-yellow); min-height: 20px;">
+                Press Start to play musical melody!
+            </div>
+            <button id="simon-start-btn" class="kids-btn btn-yellow" onclick="startSimonGame()">
+                🎵 Play Musical Pattern
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🐶 MODULE 2: PUPPY PATHFINDER (MULTI-LEVEL MAZE)         -->
+    <!-- ======================================================== -->
+    <div id="module-2" class="game-panel">
+        <div class="game-hud">
+            <div class="hud-left">
+                <button class="kids-btn btn-exit" onclick="exitToMenu()">⬅ Exit</button>
+                <div class="hud-title">🐶 Puppy Pathfinder</div>
+            </div>
+            <div class="hud-center">
+                <div class="hud-pill">Track: <span id="m2-track-num">1</span> / 3</div>
+                <div class="hud-pill" style="color: var(--emerald-green);">Bones: <span id="m2-bones-count">0</span> / 3</div>
+            </div>
+            <div class="hud-right">
+                <button class="kids-btn btn-primary" onclick="resetModule2()">🔄 Try Again</button>
+            </div>
+        </div>
+
+        <div class="game-instructions">
+            Drag mouse or finger from 🐶 Puppy to 🏡 Doghouse without touching walls! Collect 🦴 treats!
+        </div>
+
+        <canvas id="maze-canvas" width="600" height="260"></canvas>
+        <div id="m2-status-msg" style="margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--sunny-yellow); min-height: 20px;">
+            Touch puppy and draw path to the doghouse!
+        </div>
+        <div style="margin-top: 4px;">
+            <button id="m2-next-btn" class="kids-btn btn-green" onclick="nextMazeTrack()" style="display: none;">
+                Next Maze Track ➡️
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🔤 MODULE 1: PHONICS & LETTER REVERSAL SHIELD           -->
+    <!-- ======================================================== -->
+    <div id="module-1" class="game-panel">
+        <div class="game-hud">
+            <div class="hud-left">
+                <button class="kids-btn btn-exit" onclick="exitToMenu()">⬅ Exit</button>
+                <div class="hud-title">🔤 Phonics Reversal Shield</div>
+            </div>
+            <div class="hud-center">
+                <div class="hud-pill">Score: <span id="m1-score">0</span></div>
+                <div class="hud-pill" style="color: var(--candy-pink);">Lives: <span id="m1-lives">❤️❤️❤️</span></div>
+            </div>
+            <div class="hud-right">
+                <div class="hud-pill" style="color: var(--primary-blue);">Focus: b, d, p, q</div>
+            </div>
+        </div>
+
+        <div class="game-instructions">
+            Catch letters before they fall! Press keyboard keys or tap on-screen buttons below.
+        </div>
+
+        <div id="m1-canvas-area" style="flex: 1; min-height: 140px; max-height: calc(100vh - 270px); position: relative; width: 100%; border: 2px solid #334155; overflow: hidden; background: #020617; border-radius: 12px;"></div>
+
+        <div class="touch-keyboard">
+            <button class="key-btn" onclick="triggerLetterPress('B')">B</button>
+            <button class="key-btn" onclick="triggerLetterPress('D')">D</button>
+            <button class="key-btn" onclick="triggerLetterPress('P')">P</button>
+            <button class="key-btn" onclick="triggerLetterPress('Q')">Q</button>
+            <button class="key-btn" onclick="triggerLetterPress('A')">A</button>
+            <button class="key-btn" onclick="triggerLetterPress('C')">C</button>
+            <button class="key-btn" onclick="triggerLetterPress('M')">M</button>
+            <button class="key-btn" onclick="triggerLetterPress('S')">S</button>
+        </div>
+
+        <div style="margin-top: 6px;">
+            <button id="m1-start-btn" class="kids-btn btn-primary" onclick="startModule1()">Start Phonics Game</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- ======================================================== -->
+<!-- 🎵 AUDIO SYNTHESIZER & GAME SCRIPT ENGINE                -->
+<!-- ======================================================== -->
+<script>
+    /* ----------------------------------------------------
+       1. FULLSCREEN & RESIZE CONTROLLER
+       ---------------------------------------------------- */
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        }
+    }
+
+    /* ----------------------------------------------------
+       2. WEB AUDIO SYNTHESIZER ENGINE (Rich Sound Effects)
+       ---------------------------------------------------- */
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    function initAudio() {
+        if (!audioCtx) {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (AudioContextClass) {
+                audioCtx = new AudioContextClass();
+            }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function toggleSound() {
+        soundEnabled = !soundEnabled;
+        const icon = document.getElementById('sound-icon');
+        icon.textContent = soundEnabled ? '🔊' : '🔇';
+        if (soundEnabled) {
+            initAudio();
+            playPopSound();
+        }
+    }
+
+    function playPopSound() {
+        if (!soundEnabled) return;
+        initAudio();
+        if (!audioCtx) return;
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            const now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(350, now);
+            osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+            gain.gain.setValueAtTime(0.4, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.09);
+        } catch(e) {}
+    }
+
+    const PENTATONIC_FREQS = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
+    function playTileChime(index) {
+        if (!soundEnabled) return;
+        initAudio();
+        if (!audioCtx) return;
+        try {
+            const freq = PENTATONIC_FREQS[index % PENTATONIC_FREQS.length];
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            const now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.36);
+        } catch(e) {}
+    }
+
+    function playVictoryFanfare() {
+        if (!soundEnabled) return;
+        initAudio();
+        if (!audioCtx) return;
+        try {
+            const notes = [261.63, 329.63, 392.00, 523.25];
+            notes.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                const startTime = audioCtx.currentTime + (i * 0.12);
+                osc.frequency.setValueAtTime(freq, startTime);
+                gain.gain.setValueAtTime(0.35, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(startTime);
+                osc.stop(startTime + 0.32);
+            });
+        } catch(e) {}
+    }
+
+    function playBoingSound() {
+        if (!soundEnabled) return;
+        initAudio();
+        if (!audioCtx) return;
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            const now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(220, now);
+            osc.frequency.exponentialRampToValueAtTime(110, now + 0.25);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.26);
+        } catch(e) {}
+    }
+
+    function speakKid(text) {
+        if (!soundEnabled) return;
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.95;
+            utterance.pitch = 1.35;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    /* ----------------------------------------------------
+       3. CELEBRATION BALLOONS & CONFETTI ENGINE (ATTRACTIVE)
+       ---------------------------------------------------- */
+    let globalStars = 0;
+    const balloonContainer = document.getElementById('balloon-container');
+    const BALLOON_COLORS = ['#f43f5e', '#38bdf8', '#facc15', '#10b981', '#a855f7', '#fb923c', '#ec4899'];
+
+    function awardStars(num) {
+        globalStars += num;
+        document.getElementById('global-stars').textContent = globalStars;
+    }
+
+    function launchCelebrationBalloons(count = 8) {
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                createSingleBalloon();
+            }, i * 260);
+        }
+        triggerConfettiRain();
+    }
+
+    function createSingleBalloon() {
+        const balloon = document.createElement('div');
+        balloon.className = 'celebration-balloon';
+        const color = BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)];
+        balloon.style.backgroundColor = color;
+        
+        const leftX = Math.random() * (window.innerWidth - 80) + 15;
+        balloon.style.left = leftX + 'px';
+
+        const knot = document.createElement('div');
+        knot.className = 'balloon-knot';
+        knot.style.backgroundColor = color;
+        balloon.appendChild(knot);
+
+        balloon.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
+            popBalloonElement(balloon, color);
+        });
+
+        balloonContainer.appendChild(balloon);
+
+        setTimeout(() => {
+            if (balloon.parentNode) balloon.remove();
+        }, 4600);
+    }
+
+    function popBalloonElement(balloon, color) {
+        playPopSound();
+        awardStars(1);
+        const rect = balloon.getBoundingClientRect();
+        createPopParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, color);
+        balloon.remove();
+        speakKid("Pop!");
+    }
+
+    function createPopParticles(x, y, color) {
+        const count = 10;
+        for (let i = 0; i < count; i++) {
+            const p = document.createElement('div');
+            p.style.position = 'fixed';
+            p.style.left = x + 'px';
+            p.style.top = y + 'px';
+            p.style.width = '7px';
+            p.style.height = '7px';
+            p.style.borderRadius = '50%';
+            p.style.backgroundColor = color;
+            p.style.pointerEvents = 'none';
+            p.style.zIndex = '10001';
+            const angle = (Math.PI * 2 / count) * i;
+            const dist = 30 + Math.random() * 20;
+            p.style.transition = 'all 0.35s ease-out';
+            document.body.appendChild(p);
+
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) scale(0)`;
+                p.style.opacity = '0';
+            });
+
+            setTimeout(() => p.remove(), 400);
+        }
+    }
+
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const confettiCtx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+    let confettiAnimId = null;
+
+    function resizeConfetti() {
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeConfetti);
+    resizeConfetti();
+
+    function triggerConfettiRain() {
+        confettiParticles = [];
+        for (let i = 0; i < 50; i++) {
+            confettiParticles.push({
+                x: Math.random() * confettiCanvas.width,
+                y: -10 - Math.random() * 40,
+                w: 7 + Math.random() * 7,
+                h: 5 + Math.random() * 5,
+                color: BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)],
+                speedY: 2.5 + Math.random() * 3.5,
+                speedX: (Math.random() - 0.5) * 2.5,
+                rotation: Math.random() * 360,
+                rotSpeed: (Math.random() - 0.5) * 8
+            });
+        }
+        if (!confettiAnimId) animateConfetti();
+    }
+
+    function animateConfetti() {
+        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        let alive = false;
+        for (let p of confettiParticles) {
+            p.y += p.speedY;
+            p.x += p.speedX;
+            p.rotation += p.rotSpeed;
+            if (p.y < confettiCanvas.height) {
+                alive = true;
+                confettiCtx.save();
+                confettiCtx.translate(p.x, p.y);
+                confettiCtx.rotate((p.rotation * Math.PI) / 180);
+                confettiCtx.fillStyle = p.color;
+                confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                confettiCtx.restore();
+            }
+        }
+        if (alive) {
+            confettiAnimId = requestAnimationFrame(animateConfetti);
+        } else {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            cancelAnimationFrame(confettiAnimId);
+            confettiAnimId = null;
+        }
+    }
+
+    let nextModalAction = null;
+    function showCelebrationModal(title, desc, nextAction) {
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-desc').textContent = desc;
+        nextModalAction = nextAction;
+        const modal = document.getElementById('celebration-modal');
+        modal.classList.add('show');
+        playVictoryFanfare();
+        launchCelebrationBalloons(8);
+    }
+
+    function closeCelebrationModal() {
+        document.getElementById('celebration-modal').classList.remove('show');
+    }
+
+    function handleModalNext() {
+        closeCelebrationModal();
+        if (typeof nextModalAction === 'function') {
+            nextModalAction();
+        }
+    }
+
+    /* ----------------------------------------------------
+       4. NAVIGATION & GLOBAL HUB CONTROLLER (EXIT BUTTON)
+       ---------------------------------------------------- */
+    let currentModule = 0;
+
+    function openGame(moduleNum) {
+        initAudio();
+        currentModule = moduleNum;
+        document.getElementById('menu-view').style.display = 'none';
+        document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById(`module-${moduleNum}`).classList.add('active');
+        document.getElementById('global-exit-btn').style.display = 'inline-flex';
+
+        if (moduleNum === 3) initSpotDifferenceGame();
+        if (moduleNum === 4) initMemoryMatrixHub();
+        if (moduleNum === 2) initMazeModule();
+        if (moduleNum === 1) startModule1();
+    }
+
+    function exitToMenu() {
+        initAudio();
+        closeCelebrationModal();
+        m1Playing = false;
+        clearInterval(m1GameInterval);
+        clearInterval(m1SpawnInterval);
+        clearInterval(matrixPlayTimer);
+        m4IsPlaying = false;
+
+        document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('menu-view').style.display = 'flex';
+        document.getElementById('global-exit-btn').style.display = 'none';
+        currentModule = 0;
+        playPopSound();
+    }
+
+    function selectAvatar(emoji) {
+        playPopSound();
+        document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+        speakKid("Nice to meet you!");
+    }
+
+    /* ----------------------------------------------------
+       5. MODULE 3: SPOT THE DIFFERENCE (SCALABLE & NO SCROLL)
+       ---------------------------------------------------- */
+    let m3Level = 1;
+    let m3FoundSpots = new Set();
+    const M3_MAX_LEVELS = 5;
+
+    const SPOT_LEVELS = [
+        {
+            title: "Level 1: Pizza Party Chef 🍕",
+            desc: "Spot 3 differences: missing olive, mushroom topping, and chef hat ribbon!",
+            renderLeft: renderPizzaLeft,
+            renderRight: renderPizzaRight,
+            targets: [
+                { id: 'diff-1', x: 200, y: 130, r: 25, label: "Green Olive" },
+                { id: 'diff-2', x: 280, y: 180, r: 25, label: "Mushroom Slice" },
+                { id: 'diff-3', x: 135, y: 65,  r: 28, label: "Chef Hat Ribbon" }
+            ]
+        },
+        {
+            title: "Level 2: Yummy Sweet Bakery 🧁",
+            desc: "Spot 3 differences: cherry on cupcake, donut frosting color, and cookie shape!",
+            renderLeft: renderBakeryLeft,
+            renderRight: renderBakeryRight,
+            targets: [
+                { id: 'diff-1', x: 110, y: 110, r: 26, label: "Cupcake Cherry" },
+                { id: 'diff-2', x: 230, y: 160, r: 28, label: "Blue Donut Frosting" },
+                { id: 'diff-3', x: 335, y: 130, r: 25, label: "Star Cookie" }
+            ]
+        },
+        {
+            title: "Level 3: Happy Farm Animals 🐮",
+            desc: "Spot 3 differences: piglet sunglasses, cow bell color, and little chick!",
+            renderLeft: renderFarmLeft,
+            renderRight: renderFarmRight,
+            targets: [
+                { id: 'diff-1', x: 130, y: 145, r: 28, label: "Cool Sunglasses" },
+                { id: 'diff-2', x: 275, y: 180, r: 25, label: "Golden Bell" },
+                { id: 'diff-3', x: 360, y: 90,  r: 24, label: "Little Chick" }
+            ]
+        },
+        {
+            title: "Level 4: Outer Space Rocket 🚀",
+            desc: "Spot 3 differences: alien in rocket porthole, saturn ring, and bright star!",
+            renderLeft: renderSpaceLeft,
+            renderRight: renderSpaceRight,
+            targets: [
+                { id: 'diff-1', x: 215, y: 110, r: 28, label: "Cute Alien" },
+                { id: 'diff-2', x: 345, y: 70,  r: 26, label: "Planetary Ring" },
+                { id: 'diff-3', x: 90,  y: 65,  r: 25, label: "Yellow Comet" }
+            ]
+        },
+        {
+            title: "Level 5: Deep Ocean Treasure 🐠",
+            desc: "Spot 3 differences: open treasure chest gems, clownfish stripes, and pink jellyfish!",
+            renderLeft: renderOceanLeft,
+            renderRight: renderOceanRight,
+            targets: [
+                { id: 'diff-1', x: 330, y: 195, r: 30, label: "Sparkling Gems" },
+                { id: 'diff-2', x: 125, y: 135, r: 26, label: "Purple Striped Fish" },
+                { id: 'diff-3', x: 220, y: 75,  r: 26, label: "Pink Glowing Jellyfish" }
+            ]
+        }
+    ];
+
+    function initSpotDifferenceGame() {
+        m3Level = 1;
+        loadSpotLevel(m3Level);
+    }
+
+    function loadSpotLevel(lvl) {
+        const lvlData = SPOT_LEVELS[lvl - 1];
+        m3FoundSpots.clear();
+        document.getElementById('m3-level-num').textContent = lvl;
+        document.getElementById('m3-found-count').textContent = "0";
+        document.getElementById('m3-total-count').textContent = lvlData.targets.length;
+        document.getElementById('m3-progress-bar').style.width = "0%";
+        document.getElementById('m3-status-msg').textContent = lvlData.desc;
+        document.getElementById('m3-next-btn').style.display = 'none';
+
+        document.getElementById('spot-svg-left').innerHTML = lvlData.renderLeft();
+        document.getElementById('spot-svg-right').innerHTML = lvlData.renderRight();
+
+        const targetsContainer = document.getElementById('spot-targets-container');
+        const foundLayer = document.getElementById('spot-found-layer');
+        targetsContainer.innerHTML = '';
+        foundLayer.innerHTML = '';
+
+        // Position using percentages relative to SVG viewBox (440 x 290)
+        lvlData.targets.forEach((t) => {
+            const targetEl = document.createElement('div');
+            targetEl.className = 'difference-target';
+            targetEl.id = t.id;
+            targetEl.style.left = ((t.x - t.r) / 440 * 100) + '%';
+            targetEl.style.top = ((t.y - t.r) / 290 * 100) + '%';
+            targetEl.style.width = ((t.r * 2) / 440 * 100) + '%';
+            targetEl.style.height = ((t.r * 2) / 290 * 100) + '%';
+            targetEl.dataset.label = t.label;
+
+            targetEl.addEventListener('click', (e) => {
+                e.stopPropagation();
+                spotTargetFound(t);
+            });
+            targetsContainer.appendChild(targetEl);
+        });
+    }
+
+    function spotTargetFound(target) {
+        if (m3FoundSpots.has(target.id)) return;
+        m3FoundSpots.add(target.id);
+        playPopSound();
+        speakKid(target.label + " found!");
+
+        const foundLayer = document.getElementById('spot-found-layer');
+        const marker = document.createElement('div');
+        marker.className = 'found-circle';
+        marker.style.left = ((target.x - target.r) / 440 * 100) + '%';
+        marker.style.top = ((target.y - target.r) / 290 * 100) + '%';
+        marker.style.width = ((target.r * 2) / 440 * 100) + '%';
+        marker.style.height = ((target.r * 2) / 290 * 100) + '%';
+        marker.innerHTML = '<span class="found-star">⭐</span>';
+        foundLayer.appendChild(marker);
+
+        const currentFound = m3FoundSpots.size;
+        const total = SPOT_LEVELS[m3Level - 1].targets.length;
+        document.getElementById('m3-found-count').textContent = currentFound;
+        const pct = (currentFound / total) * 100;
+        document.getElementById('m3-progress-bar').style.width = pct + '%';
+        awardStars(2);
+
+        if (currentFound === total) {
+            document.getElementById('m3-status-msg').textContent = "🎉 Outstanding! You found all differences!";
+            document.getElementById('m3-next-btn').style.display = 'inline-flex';
+            awardStars(5);
+
+            setTimeout(() => {
+                if (m3Level < M3_MAX_LEVELS) {
+                    showCelebrationModal(
+                        "Level " + m3Level + " Solved! 🍕🎉",
+                        "Great eyes! Tap Next Level to play the next puzzle!",
+                        () => nextSpotLevel()
+                    );
+                } else {
+                    showCelebrationModal(
+                        "Spot Difference Champion! 🏆",
+                        "Incredible! You completed all 5 puzzle levels!",
+                        () => exitToMenu()
+                    );
+                }
+            }, 500);
+        }
+    }
+
+    function handleSpotBoxClick(e) {
+        if (e.target.classList.contains('difference-target')) return;
+        playBoingSound();
+        document.getElementById('m3-status-msg').textContent = "Look closely at the pizza toppings & items!";
+    }
+
+    function giveSpotHint() {
+        const lvlData = SPOT_LEVELS[m3Level - 1];
+        const remaining = lvlData.targets.filter(t => !m3FoundSpots.has(t.id));
+        if (remaining.length > 0) {
+            const hintTarget = remaining[0];
+            const targetEl = document.getElementById(hintTarget.id);
+            if (targetEl) {
+                targetEl.style.border = "2px dashed #facc15";
+                targetEl.style.animation = "pulseGlow 0.8s 3";
+                speakKid("Look here!");
+                setTimeout(() => {
+                    targetEl.style.border = "none";
+                }, 2200);
+            }
+        }
+    }
+
+    function resetSpotPuzzle() {
+        loadSpotLevel(m3Level);
+    }
+
+    function nextSpotLevel() {
+        if (m3Level < M3_MAX_LEVELS) {
+            m3Level++;
+            loadSpotLevel(m3Level);
+        } else {
+            exitToMenu();
+        }
+    }
+
+    /* --- SVG VECTOR SCENE GENERATORS FOR SPOT THE DIFFERENCE --- */
+    function renderPizzaLeft() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#334155"/>
+            <g transform="translate(100, 30)">
+                <path d="M 20 50 Q 10 10, 40 15 Q 60 -10, 80 15 Q 110 10, 100 50 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+                <rect x="25" y="45" width="70" height="15" fill="#f43f5e" rx="4"/>
+            </g>
+            <ellipse cx="230" cy="165" rx="155" ry="105" fill="#b45309" stroke="#78350f" stroke-width="4"/>
+            <rect x="360" y="155" width="60" height="20" fill="#b45309" rx="8" stroke="#78350f" stroke-width="3"/>
+            <ellipse cx="225" cy="160" rx="135" ry="88" fill="#f59e0b" stroke="#d97706" stroke-width="4"/>
+            <ellipse cx="225" cy="160" rx="122" ry="76" fill="#fde047"/>
+            <circle cx="160" cy="140" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="200" cy="130" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="260" cy="135" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="180" cy="180" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="240" cy="185" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="215" cy="160" r="6" fill="#0f172a"/>
+            <circle cx="275" cy="170" r="6" fill="#0f172a"/>
+            <ellipse cx="165" cy="165" rx="8" ry="4" fill="#15803d"/>
+            <ellipse cx="240" cy="145" rx="8" ry="4" fill="#15803d"/>
+        </svg>`;
+    }
+
+    function renderPizzaRight() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#334155"/>
+            <g transform="translate(100, 30)">
+                <path d="M 20 50 Q 10 10, 40 15 Q 60 -10, 80 15 Q 110 10, 100 50 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+                <rect x="25" y="45" width="70" height="15" fill="#a855f7" rx="4"/>
+            </g>
+            <ellipse cx="230" cy="165" rx="155" ry="105" fill="#b45309" stroke="#78350f" stroke-width="4"/>
+            <rect x="360" y="155" width="60" height="20" fill="#b45309" rx="8" stroke="#78350f" stroke-width="3"/>
+            <ellipse cx="225" cy="160" rx="135" ry="88" fill="#f59e0b" stroke="#d97706" stroke-width="4"/>
+            <ellipse cx="225" cy="160" rx="122" ry="76" fill="#fde047"/>
+            <circle cx="160" cy="140" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="200" cy="130" r="14" fill="#16a34a" stroke="#15803d" stroke-width="3"/>
+            <circle cx="260" cy="135" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="180" cy="180" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="240" cy="185" r="14" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <path d="M 270 185 Q 280 170 290 185 Z" fill="#f3f4f6" stroke="#78716c" stroke-width="2"/>
+            <rect x="277" y="185" width="6" height="8" fill="#e7e5e4"/>
+            <circle cx="215" cy="160" r="6" fill="#0f172a"/>
+            <ellipse cx="165" cy="165" rx="8" ry="4" fill="#15803d"/>
+            <ellipse cx="240" cy="145" rx="8" ry="4" fill="#15803d"/>
+        </svg>`;
+    }
+
+    function renderBakeryLeft() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#475569"/>
+            <g transform="translate(70, 70)">
+                <path d="M 20 80 L 30 140 L 70 140 L 80 80 Z" fill="#fb923c" stroke="#c2410c" stroke-width="2"/>
+                <path d="M 15 80 Q 50 20 85 80 Z" fill="#f43f5e"/>
+                <circle cx="50" cy="40" r="10" fill="#dc2626"/>
+            </g>
+            <g transform="translate(170, 95)">
+                <circle cx="60" cy="65" r="50" fill="#f59e0b" stroke="#b45309" stroke-width="3"/>
+                <circle cx="60" cy="65" r="38" fill="#ec4899"/>
+                <circle cx="60" cy="65" r="18" fill="#475569"/>
+            </g>
+            <g transform="translate(290, 85)">
+                <polygon points="45,15 54,35 75,37 59,51 64,72 45,60 26,72 31,51 15,37 36,35" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>
+            </g>
+        </svg>`;
+    }
+
+    function renderBakeryRight() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#475569"/>
+            <g transform="translate(70, 70)">
+                <path d="M 20 80 L 30 140 L 70 140 L 80 80 Z" fill="#fb923c" stroke="#c2410c" stroke-width="2"/>
+                <path d="M 15 80 Q 50 20 85 80 Z" fill="#f43f5e"/>
+            </g>
+            <g transform="translate(170, 95)">
+                <circle cx="60" cy="65" r="50" fill="#f59e0b" stroke="#b45309" stroke-width="3"/>
+                <circle cx="60" cy="65" r="38" fill="#38bdf8"/>
+                <circle cx="60" cy="65" r="18" fill="#475569"/>
+            </g>
+            <g transform="translate(290, 85)">
+                <path d="M 45 65 A 16 16 0 0 0 65 35 A 16 16 0 0 0 45 45 A 16 16 0 0 0 25 35 A 16 16 0 0 0 45 65 Z" fill="#f87171" stroke="#dc2626" stroke-width="2"/>
+            </g>
+        </svg>`;
+    }
+
+    function renderFarmLeft() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#14532d"/>
+            <g transform="translate(70, 90)">
+                <circle cx="60" cy="55" r="40" fill="#f472b6" stroke="#db2777" stroke-width="2"/>
+                <ellipse cx="60" cy="65" rx="16" ry="10" fill="#fbcfe8"/>
+                <circle cx="45" cy="45" r="4" fill="#0f172a"/>
+                <circle cx="75" cy="45" r="4" fill="#0f172a"/>
+            </g>
+            <g transform="translate(200, 75)">
+                <ellipse cx="75" cy="70" rx="55" ry="40" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                <circle cx="50" cy="60" r="16" fill="#0f172a"/>
+                <circle cx="75" cy="105" r="10" fill="#f43f5e"/>
+            </g>
+        </svg>`;
+    }
+
+    function renderFarmRight() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#14532d"/>
+            <g transform="translate(70, 90)">
+                <circle cx="60" cy="55" r="40" fill="#f472b6" stroke="#db2777" stroke-width="2"/>
+                <ellipse cx="60" cy="65" rx="16" ry="10" fill="#fbcfe8"/>
+                <rect x="35" y="40" width="22" height="14" rx="4" fill="#0f172a"/>
+                <rect x="63" y="40" width="22" height="14" rx="4" fill="#0f172a"/>
+                <line x1="57" y1="46" x2="63" y2="46" stroke="#0f172a" stroke-width="3"/>
+            </g>
+            <g transform="translate(200, 75)">
+                <ellipse cx="75" cy="70" rx="55" ry="40" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                <circle cx="50" cy="60" r="16" fill="#0f172a"/>
+                <circle cx="75" cy="105" r="10" fill="#facc15"/>
+            </g>
+            <g transform="translate(340, 70)">
+                <circle cx="20" cy="20" r="14" fill="#facc15"/>
+                <polygon points="32,20 40,17 32,24" fill="#f97316"/>
+            </g>
+        </svg>`;
+    }
+
+    function renderSpaceLeft() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#090d16"/>
+            <circle cx="50" cy="40" r="3" fill="#ffffff"/>
+            <circle cx="90" cy="65" r="4" fill="#ffffff"/>
+            <g transform="translate(170, 50)">
+                <path d="M 45 10 Q 75 40 75 120 L 15 120 Q 15 40 45 10 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+                <polygon points="15,100 0,140 15,125" fill="#ef4444"/>
+                <polygon points="75,100 90,140 75,125" fill="#ef4444"/>
+                <circle cx="45" cy="60" r="16" fill="#38bdf8"/>
+            </g>
+            <g transform="translate(300, 40)">
+                <ellipse cx="45" cy="30" rx="22" ry="22" fill="#f59e0b"/>
+                <ellipse cx="45" cy="30" rx="40" ry="10" fill="none" stroke="#fde047" stroke-width="4"/>
+            </g>
+        </svg>`;
+    }
+
+    function renderSpaceRight() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#090d16"/>
+            <circle cx="50" cy="40" r="3" fill="#ffffff"/>
+            <polygon points="90,55 94,63 103,64 96,70 98,78 90,73 82,78 84,70 77,64 86,63" fill="#facc15"/>
+            <g transform="translate(170, 50)">
+                <path d="M 45 10 Q 75 40 75 120 L 15 120 Q 15 40 45 10 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+                <polygon points="15,100 0,140 15,125" fill="#ef4444"/>
+                <polygon points="75,100 90,140 75,125" fill="#ef4444"/>
+                <circle cx="45" cy="60" r="16" fill="#38bdf8"/>
+                <circle cx="45" cy="62" r="9" fill="#10b981"/>
+                <circle cx="42" cy="60" r="2" fill="#0f172a"/>
+                <circle cx="48" cy="60" r="2" fill="#0f172a"/>
+            </g>
+            <g transform="translate(300, 40)">
+                <ellipse cx="45" cy="30" rx="22" ry="22" fill="#f59e0b"/>
+            </g>
+        </svg>`;
+    }
+
+    function renderOceanLeft() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#0c4a6e"/>
+            <g transform="translate(70, 100)">
+                <ellipse cx="55" cy="35" rx="30" ry="18" fill="#f97316"/>
+                <polygon points="25,35 10,20 10,50" fill="#ea580c"/>
+                <circle cx="70" cy="30" r="4" fill="#0f172a"/>
+            </g>
+            <g transform="translate(180, 45)">
+                <path d="M 20 40 Q 40 15 60 40 Z" fill="#38bdf8"/>
+                <line x1="28" y1="40" x2="26" y2="65" stroke="#38bdf8" stroke-width="2"/>
+                <line x1="52" y1="40" x2="54" y2="65" stroke="#38bdf8" stroke-width="2"/>
+            </g>
+            <g transform="translate(280, 160)">
+                <rect x="20" y="30" width="60" height="35" fill="#b45309" stroke="#78350f" stroke-width="2"/>
+                <path d="M 20 30 Q 50 10 80 30 Z" fill="#d97706"/>
+                <rect x="46" y="32" width="8" height="12" fill="#facc15"/>
+            </g>
+        </svg>`;
+    }
+
+    function renderOceanRight() {
+        return `<svg viewBox="0 0 440 290" width="100%" height="100%">
+            <rect width="440" height="290" fill="#0c4a6e"/>
+            <g transform="translate(70, 100)">
+                <ellipse cx="55" cy="35" rx="30" ry="18" fill="#a855f7"/>
+                <polygon points="25,35 10,20 10,50" fill="#7e22ce"/>
+                <circle cx="70" cy="30" r="4" fill="#0f172a"/>
+            </g>
+            <g transform="translate(180, 45)">
+                <path d="M 20 40 Q 40 15 60 40 Z" fill="#f43f5e"/>
+                <line x1="28" y1="40" x2="26" y2="65" stroke="#f43f5e" stroke-width="2"/>
+                <line x1="52" y1="40" x2="54" y2="65" stroke="#f43f5e" stroke-width="2"/>
+            </g>
+            <g transform="translate(280, 160)">
+                <rect x="20" y="35" width="60" height="30" fill="#b45309" stroke="#78350f" stroke-width="2"/>
+                <path d="M 20 20 Q 50 0 80 20 Z" fill="#d97706"/>
+                <circle cx="40" cy="32" r="5" fill="#38bdf8"/>
+                <circle cx="55" cy="30" r="6" fill="#facc15"/>
+                <circle cx="68" cy="33" r="5" fill="#ec4899"/>
+            </g>
+        </svg>`;
+    }
+
+    /* ----------------------------------------------------
+       6. MODULE 4: MEMORY MATRIX & BRAIN FRAMEWORK
+       ---------------------------------------------------- */
+    let m4Level = 1;
+    let m4Streak = 0;
+    let m4Sequence = [];
+    let m4PlayerStep = 0;
+    let m4IsPlaying = false;
+    let matrixPlayTimer = null;
+    const matrixTiles = document.querySelectorAll('.matrix-tile');
+
+    function getMatrixSpeedSettings(lvl) {
+        if (lvl === 1) return { count: 3, delay: 950, label: "🐢 Slow & Gentle", class: "slow" };
+        if (lvl === 2) return { count: 4, delay: 800, label: "🐇 Normal Pace",   class: "medium" };
+        if (lvl === 3) return { count: 5, delay: 650, label: "🦊 Fast Tempo",    class: "fast" };
+        if (lvl === 4) return { count: 6, delay: 520, label: "⚡ Super Fast",    class: "super" };
+        if (lvl === 5) return { count: 7, delay: 420, label: "🚀 Rocket Flash",  class: "super" };
+        return { count: 8, delay: 340, label: "🌟 Lightning Master", class: "super" };
+    }
+
+    function initMemoryMatrixHub() {
+        m4Level = 1;
+        m4Streak = 0;
+        updateMatrixHud();
+        switchMemoryMode('matrix');
+    }
+
+    function updateMatrixHud() {
+        document.getElementById('m4-level-num').textContent = m4Level;
+        document.getElementById('m4-streak').textContent = m4Streak;
+        const speed = getMatrixSpeedSettings(m4Level);
+        const badge = document.getElementById('m4-speed-badge');
+        badge.textContent = speed.label;
+        badge.className = 'speed-badge ' + speed.class;
+    }
+
+    function switchMemoryMode(mode) {
+        document.getElementById('m4-mode-matrix').style.display = mode === 'matrix' ? 'flex' : 'none';
+        document.getElementById('m4-mode-cards').style.display = mode === 'cards' ? 'flex' : 'none';
+        document.getElementById('m4-mode-simon').style.display = mode === 'simon' ? 'flex' : 'none';
+
+        document.getElementById('tab-matrix').classList.toggle('active', mode === 'matrix');
+        document.getElementById('tab-cards').classList.toggle('active', mode === 'cards');
+        document.getElementById('tab-simon').classList.toggle('active', mode === 'simon');
+
+        if (mode === 'cards') initCardsGame();
+    }
+
+    function startMatrixGame() {
+        document.getElementById('m4-start-btn').style.display = 'none';
+        document.getElementById('m4-replay-btn').style.display = 'inline-flex';
+        generateMatrixRound();
+    }
+
+    function generateMatrixRound() {
+        updateMatrixHud();
+        const settings = getMatrixSpeedSettings(m4Level);
+        m4Sequence = [];
+        m4PlayerStep = 0;
+        for (let i = 0; i < settings.count; i++) {
+            m4Sequence.push(Math.floor(Math.random() * 9));
+        }
+        playMatrixSequence();
+    }
+
+    function replayMatrixPattern() {
+        if (m4IsPlaying) return;
+        playMatrixSequence();
+    }
+
+    function playMatrixSequence() {
+        m4IsPlaying = false;
+        m4PlayerStep = 0;
+        document.getElementById('m4-status-text').textContent = "👀 Watch closely...";
+        document.getElementById('m4-status-text').style.color = "var(--primary-blue)";
+
+        const settings = getMatrixSpeedSettings(m4Level);
+        let idx = 0;
+        clearInterval(matrixPlayTimer);
+
+        matrixPlayTimer = setInterval(() => {
+            if (idx > 0) {
+                matrixTiles[m4Sequence[idx - 1]].classList.remove('lit');
+            }
+            if (idx < m4Sequence.length) {
+                const tileIndex = m4Sequence[idx];
+                matrixTiles[tileIndex].classList.add('lit');
+                playTileChime(tileIndex);
+                idx++;
+            } else {
+                clearInterval(matrixPlayTimer);
+                matrixTiles[m4Sequence[m4Sequence.length - 1]].classList.remove('lit');
+                document.getElementById('m4-status-text').textContent = "Your turn! Repeat the pattern ✨";
+                document.getElementById('m4-status-text').style.color = "var(--sunny-yellow)";
+                speakKid("Your turn!");
+                m4IsPlaying = true;
+            }
+        }, settings.delay);
+    }
+
+    function matrixTileClick(tileIndex) {
+        if (!m4IsPlaying) return;
+        playTileChime(tileIndex);
+
+        if (tileIndex === m4Sequence[m4PlayerStep]) {
+            matrixTiles[tileIndex].classList.add('correct');
+            setTimeout(() => matrixTiles[tileIndex].classList.remove('correct'), 220);
+            m4PlayerStep++;
+
+            if (m4PlayerStep === m4Sequence.length) {
+                m4IsPlaying = false;
+                m4Streak++;
+                awardStars(3);
+                document.getElementById('m4-status-text').textContent = "🎈 Super Memory! Look at the balloons!";
+                document.getElementById('m4-status-text').style.color = "var(--emerald-green)";
+                speakKid("Awesome job! Pop the balloons!");
+                launchCelebrationBalloons(8);
+
+                setTimeout(() => {
+                    m4Level++;
+                    updateMatrixHud();
+                    document.getElementById('m4-status-text').textContent = `Speeding up to Level ${m4Level}! ⚡`;
+                    setTimeout(generateMatrixRound, 1200);
+                }, 1400);
+            }
+        } else {
+            playBoingSound();
+            matrixTiles[tileIndex].classList.add('wrong');
+            setTimeout(() => matrixTiles[tileIndex].classList.remove('wrong'), 400);
+            m4Streak = 0;
+            document.getElementById('m4-streak').textContent = "0";
+            document.getElementById('m4-status-text').textContent = "Oops! Don't worry, watch again! 💡";
+            document.getElementById('m4-status-text').style.color = "var(--candy-pink)";
+            speakKid("Try again!");
+            m4IsPlaying = false;
+            setTimeout(playMatrixSequence, 1100);
+        }
+    }
+
+    /* --- MODE B: EMOJI CARDS FLIP MATCH --- */
+    const CARD_EMOJIS = ['🍕', '🍦', '🎈', '🐶', '🚀', '⭐'];
+    let cardsArray = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+
+    function initCardsGame() {
+        const grid = document.getElementById('cards-grid');
+        grid.innerHTML = '';
+        cardsArray = [...CARD_EMOJIS, ...CARD_EMOJIS].sort(() => Math.random() - 0.5);
+        flippedCards = [];
+        matchedPairs = 0;
+        document.getElementById('cards-status').textContent = "Find all matching emoji pairs!";
+
+        cardsArray.forEach((emoji, i) => {
+            const card = document.createElement('div');
+            card.className = 'memory-card hidden';
+            card.dataset.index = i;
+            card.dataset.emoji = emoji;
+            card.textContent = emoji;
+            card.addEventListener('click', () => handleCardClick(card));
+            grid.appendChild(card);
+        });
+    }
+
+    function handleCardClick(card) {
+        if (!card.classList.contains('hidden') || flippedCards.length >= 2) return;
+        playPopSound();
+        card.classList.remove('hidden');
+        flippedCards.push(card);
+
+        if (flippedCards.length === 2) {
+            const [c1, c2] = flippedCards;
+            if (c1.dataset.emoji === c2.dataset.emoji) {
+                playTileChime(5);
+                c1.classList.add('matched');
+                c2.classList.add('matched');
+                flippedCards = [];
+                matchedPairs++;
+                awardStars(2);
+
+                if (matchedPairs === CARD_EMOJIS.length) {
+                    document.getElementById('cards-status').textContent = "🎉 Brilliant! All pairs matched!";
+                    awardStars(5);
+                    launchCelebrationBalloons(8);
+                    playVictoryFanfare();
+                    speakKid("You found all matches!");
+                }
+            } else {
+                setTimeout(() => {
+                    c1.classList.add('hidden');
+                    c2.classList.add('hidden');
+                    flippedCards = [];
+                }, 750);
+            }
+        }
+    }
+
+    /* --- MODE C: MUSICAL SIMON GAME --- */
+    let simonSeq = [];
+    let simonPlayerIdx = 0;
+    let simonActive = false;
+
+    function startSimonGame() {
+        simonSeq = [];
+        document.getElementById('simon-start-btn').style.display = 'none';
+        nextSimonRound();
+    }
+
+    function nextSimonRound() {
+        simonPlayerIdx = 0;
+        simonSeq.push(Math.floor(Math.random() * 4));
+        playSimonSequence();
+    }
+
+    function playSimonSequence() {
+        simonActive = false;
+        document.getElementById('simon-status').textContent = "Listen to the melody...";
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i < simonSeq.length) {
+                flashSimonPad(simonSeq[i]);
+                i++;
+            } else {
+                clearInterval(timer);
+                simonActive = true;
+                document.getElementById('simon-status').textContent = "Your turn! Tap the colors!";
+            }
+        }, 650);
+    }
+
+    function flashSimonPad(num) {
+        const pad = document.getElementById(`simon-${num}`);
+        pad.classList.add('lit');
+        playTileChime(num * 2);
+        setTimeout(() => pad.classList.remove('lit'), 300);
+    }
+
+    function simonPadClick(num) {
+        if (!simonActive) return;
+        flashSimonPad(num);
+
+        if (num === simonSeq[simonPlayerIdx]) {
+            simonPlayerIdx++;
+            if (simonPlayerIdx === simonSeq.length) {
+                simonActive = false;
+                document.getElementById('simon-status').textContent = "🎵 Perfect melody! Level Up!";
+                awardStars(2);
+                launchCelebrationBalloons(5);
+                setTimeout(nextSimonRound, 1000);
+            }
+        } else {
+            playBoingSound();
+            document.getElementById('simon-status').textContent = "Oops! Melody missed. Try again!";
+            simonActive = false;
+            setTimeout(playSimonSequence, 1000);
+        }
+    }
+
+    /* ----------------------------------------------------
+       7. MODULE 2: PUPPY PATHFINDER (MULTI-LEVEL MAZE)
+       ---------------------------------------------------- */
+    const mazeCanvas = document.getElementById('maze-canvas');
+    const mCtx = mazeCanvas.getContext('2d');
+    let mazeDrawing = false;
+    let currentMazeTrack = 1;
+    let bonesCollected = 0;
+
+    const MAZE_TRACKS = [
+        {
+            puppy: { x: 45, y: 130, r: 16 },
+            home: { x: 550, y: 130, r: 22 },
+            walls: [
+                { x: 170, y: 0,   w: 24, h: 180 },
+                { x: 310, y: 80,  w: 24, h: 180 },
+                { x: 440, y: 0,   w: 24, h: 170 }
+            ],
+            bones: [{ x: 100, y: 70 }, { x: 250, y: 200 }, { x: 380, y: 60 }]
+        },
+        {
+            puppy: { x: 45, y: 50, r: 16 },
+            home: { x: 540, y: 210, r: 22 },
+            walls: [
+                { x: 120, y: 0,   w: 24, h: 190 },
+                { x: 240, y: 60,  w: 24, h: 190 },
+                { x: 360, y: 0,   w: 24, h: 190 },
+                { x: 460, y: 60,  w: 24, h: 190 }
+            ],
+            bones: [{ x: 180, y: 220 }, { x: 300, y: 40 }, { x: 410, y: 220 }]
+        },
+        {
+            puppy: { x: 45, y: 130, r: 16 },
+            home: { x: 540, y: 130, r: 22 },
+            walls: [
+                { x: 140, y: 45,  w: 220, h: 22 },
+                { x: 260, y: 130, w: 22,  h: 130 },
+                { x: 380, y: 45,  w: 22,  h: 150 }
+            ],
+            bones: [{ x: 200, y: 90 }, { x: 320, y: 200 }, { x: 460, y: 90 }]
+        }
+    ];
+
+    function initMazeModule() {
+        bonesCollected = 0;
+        document.getElementById('m2-track-num').textContent = currentMazeTrack;
+        document.getElementById('m2-bones-count').textContent = "0";
+        document.getElementById('m2-next-btn').style.display = 'none';
+        document.getElementById('m2-status-msg').textContent = "Guide the puppy home safely!";
+        drawMaze();
+    }
+
+    function drawMaze() {
+        const track = MAZE_TRACKS[currentMazeTrack - 1];
+        mCtx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
+
+        mCtx.fillStyle = '#475569';
+        track.walls.forEach(w => {
+            mCtx.fillRect(w.x, w.y, w.w, w.h);
+        });
+
+        mCtx.font = '18px sans-serif';
+        track.bones.forEach(b => {
+            if (!b.collected) {
+                mCtx.fillText("🦴", b.x - 10, b.y + 6);
+            }
+        });
+
+        mCtx.beginPath();
+        mCtx.arc(track.puppy.x, track.puppy.y, track.puppy.r, 0, Math.PI * 2);
+        mCtx.fillStyle = '#38bdf8';
+        mCtx.fill();
+        mCtx.font = '20px sans-serif';
+        mCtx.fillText("🐶", track.puppy.x - 10, track.puppy.y + 7);
+
+        mCtx.beginPath();
+        mCtx.arc(track.home.x, track.home.y, track.home.r, 0, Math.PI * 2);
+        mCtx.fillStyle = '#10b981';
+        mCtx.fill();
+        mCtx.fillText("🏡", track.home.x - 10, track.home.y + 7);
+    }
+
+    function getMazeCanvasCoords(e) {
+        const rect = mazeCanvas.getBoundingClientRect();
+        const scaleX = mazeCanvas.width / rect.width;
+        const scaleY = mazeCanvas.height / rect.height;
+        return {
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
+        };
+    }
+
+    mazeCanvas.addEventListener('pointerdown', (e) => {
+        const { x, y } = getMazeCanvasCoords(e);
+        const track = MAZE_TRACKS[currentMazeTrack - 1];
+        const dist = Math.hypot(x - track.puppy.x, y - track.puppy.y);
+        if (dist < 32) {
+            mazeDrawing = true;
+            document.getElementById('m2-status-msg').textContent = "Guiding puppy to the house...";
+        }
+    });
+
+    mazeCanvas.addEventListener('pointermove', (e) => {
+        if (!mazeDrawing) return;
+        const { x, y } = getMazeCanvasCoords(e);
+        const track = MAZE_TRACKS[currentMazeTrack - 1];
+
+        for (let w of track.walls) {
+            if (x > w.x && x < w.x + w.w && y > w.y && y < w.y + w.h) {
+                mazeDrawing = false;
+                playBoingSound();
+                document.getElementById('m2-status-msg').textContent = "Oops! Bumped a wall! Try again.";
+                speakKid("Ouch! Try again.");
+                drawMaze();
+                return;
+            }
+        }
+
+        track.bones.forEach(b => {
+            if (!b.collected && Math.hypot(x - b.x, y - b.y) < 22) {
+                b.collected = true;
+                bonesCollected++;
+                playPopSound();
+                document.getElementById('m2-bones-count').textContent = bonesCollected;
+                drawMaze();
+            }
+        });
+
+        if (Math.hypot(x - track.home.x, y - track.home.y) < track.home.r + 6) {
+            mazeDrawing = false;
+            document.getElementById('m2-status-msg').textContent = "🎉 Yay! Puppy is safe at home!";
+            speakKid("Puppy is home!");
+            awardStars(5);
+            launchCelebrationBalloons(6);
+            document.getElementById('m2-next-btn').style.display = 'inline-flex';
+
+            setTimeout(() => {
+                showCelebrationModal(
+                    "Puppy Reached Home! 🐶🏡",
+                    "Great motor control! Ready for the next maze track?",
+                    () => nextMazeTrack()
+                );
+            }, 500);
+            return;
+        }
+
+        mCtx.fillStyle = '#38bdf8';
+        mCtx.beginPath();
+        mCtx.arc(x, y, 6, 0, Math.PI * 2);
+        mCtx.fill();
+    });
+
+    mazeCanvas.addEventListener('pointerup', () => { mazeDrawing = false; });
+
+    function resetModule2() {
+        mazeDrawing = false;
+        const track = MAZE_TRACKS[currentMazeTrack - 1];
+        track.bones.forEach(b => b.collected = false);
+        bonesCollected = 0;
+        document.getElementById('m2-bones-count').textContent = "0";
+        drawMaze();
+    }
+
+    function nextMazeTrack() {
+        if (currentMazeTrack < MAZE_TRACKS.length) {
+            currentMazeTrack++;
+            initMazeModule();
+        } else {
+            currentMazeTrack = 1;
+            initMazeModule();
+        }
+    }
+
+    /* ----------------------------------------------------
+       8. MODULE 1: PHONICS & LETTER REVERSAL SHIELD
+       ---------------------------------------------------- */
+    const m1Area = document.getElementById('m1-canvas-area');
+    let m1Score = 0, m1Lives = 3, m1Playing = false, m1Letters = [];
+    let m1GameInterval = null, m1SpawnInterval = null;
+    const reversalCluster = ["B", "D", "P", "Q", "A", "C", "M", "S"];
+
+    function startModule1() {
+        m1Score = 0; m1Lives = 3;
+        document.getElementById('m1-score').textContent = m1Score;
+        document.getElementById('m1-lives').textContent = "❤️❤️❤️";
+        m1Area.innerHTML = '';
+        m1Letters = [];
+        m1Playing = true;
+        document.getElementById('m1-start-btn').textContent = "Restart Game";
+        clearInterval(m1GameInterval); clearInterval(m1SpawnInterval);
+        m1GameInterval = setInterval(updateM1, 25);
+        m1SpawnInterval = setInterval(spawnM1Letter, 1800);
+    }
+
+    function spawnM1Letter() {
+        if (!m1Playing) return;
+        const char = reversalCluster[Math.floor(Math.random() * reversalCluster.length)];
+        const el = document.createElement('div');
+        el.className = 'falling-letter';
+        el.textContent = char;
+        const xPos = Math.floor(Math.random() * (m1Area.clientWidth - 60)) + 30;
+        el.style.left = xPos + 'px';
+        el.style.top = '10px';
+        el.addEventListener('click', () => triggerLetterPress(char));
+        m1Area.appendChild(el);
+        m1Letters.push({ el: el, char: char, x: xPos, y: 10, speed: 1.1 + Math.random() * 0.8 });
+    }
+
+    function updateM1() {
+        const bottomThreshold = m1Area.clientHeight - 40;
+        for (let i = m1Letters.length - 1; i >= 0; i--) {
+            let l = m1Letters[i];
+            l.y += l.speed;
+            l.el.style.top = l.y + 'px';
+            if (l.y > bottomThreshold) {
+                l.el.remove();
+                m1Letters.splice(i, 1);
+                m1Lives--;
+                playBoingSound();
+                let hearts = "";
+                for (let h = 0; h < m1Lives; h++) hearts += "❤️";
+                document.getElementById('m1-lives').textContent = hearts || "💔";
+
+                if (m1Lives <= 0) {
+                    m1Playing = false;
+                    clearInterval(m1GameInterval); clearInterval(m1SpawnInterval);
+                    showCelebrationModal(
+                        "Game Over!",
+                        `You scored ${m1Score} points! Practice makes perfect!`,
+                        () => startModule1()
+                    );
+                }
+            }
+        }
+    }
+
+    function triggerLetterPress(letter) {
+        if (!m1Playing) return;
+        let targetIdx = -1, maxY = -1;
+        for (let i = 0; i < m1Letters.length; i++) {
+            if (m1Letters[i].char === letter && m1Letters[i].y > maxY) {
+                maxY = m1Letters[i].y;
+                targetIdx = i;
+            }
+        }
+        if (targetIdx !== -1) {
+            playPopSound();
+            speakKid(letter);
+            m1Letters[targetIdx].el.remove();
+            m1Letters.splice(targetIdx, 1);
+            m1Score += 10;
+            document.getElementById('m1-score').textContent = m1Score;
+            awardStars(1);
+        }
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (!m1Playing) return;
+        const key = e.key.toUpperCase();
+        triggerLetterPress(key);
+    });
+
+</script>
+</body>
+</html>
