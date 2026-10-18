@@ -1291,6 +1291,186 @@
             letter-spacing: 4px;
         }
 
+        /* ==========================================================================
+           TARGETED REVERSAL MODE (b, d, p, q Mirror Letters Focus)
+           ========================================================================== */
+        #bdpq-anchor-header {
+            position: absolute;
+            top: 68px;
+            left: 15px;
+            right: 15px;
+            display: none;
+            justify-content: center;
+            gap: 12px;
+            z-index: 25;
+            pointer-events: none;
+            flex-wrap: wrap;
+        }
+
+        .bdpq-anchor-card {
+            background: rgba(15, 23, 42, 0.88);
+            border: 2.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .bdpq-anchor-card.anchor-b {
+            border-color: #00d2ff;
+        }
+        .bdpq-anchor-card.anchor-d {
+            border-color: #ff9f43;
+        }
+        .bdpq-anchor-card.anchor-p {
+            border-color: #ff3366;
+        }
+        .bdpq-anchor-card.anchor-q {
+            border-color: #a55eea;
+        }
+
+        .bdpq-anchor-card.active-anchor {
+            transform: scale(1.15) translateY(-3px);
+            box-shadow: 0 0 25px currentColor;
+        }
+
+        .anchor-letter {
+            font-size: 26px;
+            font-weight: 900;
+            font-family: inherit;
+        }
+        .anchor-b .anchor-letter { color: #00d2ff; }
+        .anchor-d .anchor-letter { color: #ff9f43; }
+        .anchor-p .anchor-letter { color: #ff3366; }
+        .anchor-q .anchor-letter { color: #a55eea; }
+
+        .anchor-icon {
+            font-size: 22px;
+        }
+
+        .anchor-rule {
+            font-size: 11px;
+            font-weight: 700;
+            color: #d1d8e0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Large Touch Buttons for Mobile/Tablet in b/d/p/q mode */
+        #bdpq-touch-pad {
+            position: absolute;
+            bottom: 75px;
+            left: 0;
+            right: 0;
+            display: none;
+            justify-content: center;
+            gap: 14px;
+            z-index: 25;
+            padding: 0 15px;
+            flex-wrap: wrap;
+        }
+
+        .bdpq-touch-btn {
+            background: rgba(15, 23, 42, 0.92);
+            border: 3px solid #fff;
+            border-radius: 20px;
+            padding: 10px 22px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+            transition: all 0.15s ease;
+            min-width: 90px;
+        }
+
+        .bdpq-touch-btn:active, .bdpq-touch-btn:hover {
+            transform: translateY(-4px) scale(1.08);
+        }
+
+        .btn-b { border-color: #00d2ff !important; color: #00d2ff; }
+        .btn-d { border-color: #ff9f43 !important; color: #ff9f43; }
+        .btn-p { border-color: #ff3366 !important; color: #ff3366; }
+        .btn-q { border-color: #a55eea !important; color: #a55eea; }
+
+        .bdpq-touch-btn .btn-letter {
+            font-size: 34px;
+            font-weight: 900;
+        }
+
+        .bdpq-touch-btn .btn-hint {
+            font-size: 11px;
+            font-weight: 800;
+            color: #ffffff;
+            white-space: nowrap;
+        }
+
+        .bdpq-touch-btn.highlight-guide {
+            animation: pulseGuidance 0.8s infinite alternate !important;
+        }
+
+        @keyframes pulseGuidance {
+            0% { transform: scale(1); box-shadow: 0 0 10px #ffcc00; border-color: #ffcc00 !important; }
+            100% { transform: scale(1.18); box-shadow: 0 0 30px #ffcc00, 0 0 50px #ff3366; border-color: #ffffff !important; }
+        }
+
+        /* Gentle Reversal Guidance Popup */
+        #reversal-hint-banner {
+            position: absolute;
+            top: 135px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(235, 77, 75, 0.95), rgba(240, 147, 43, 0.95));
+            border: 3px solid #ffcc00;
+            border-radius: 22px;
+            padding: 12px 24px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 800;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 45;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 90%;
+            text-align: center;
+        }
+
+        /* Level Picker for b/d/p/q mode */
+        #bdpq-level-picker {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .bdpq-lvl-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            padding: 8px 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .bdpq-lvl-btn.active, .bdpq-lvl-btn:hover {
+            background: linear-gradient(135deg, #ffcc00, #ff793f);
+            color: #1f1c47;
+            border-color: #ffffff;
+            transform: scale(1.05);
+        }
+
         /* Exit & Install Buttons */
         .exit-btn {
             background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
@@ -1446,6 +1626,9 @@
         <button class="mode-tab" id="tab-letter-trace" onclick="switchMode('letter-trace')">
             <span>✍️</span> Magic Letter Tracer
         </button>
+        <button class="mode-tab" id="tab-bdpq-focus" onclick="switchMode('bdpq-focus')">
+            <span>🎯</span> b/d/p/q Reversal Master
+        </button>
     </nav>
 
     <!-- Main Content Container -->
@@ -1465,11 +1648,61 @@
                 </div>
             </div>
 
+            <!-- b/d/p/q Visual Anchors Reference Header -->
+            <div id="bdpq-anchor-header">
+                <div class="bdpq-anchor-card anchor-b" id="anchor-card-b">
+                    <span class="anchor-letter">b</span>
+                    <span class="anchor-icon">🏏⚾</span>
+                    <span class="anchor-rule">Bat then Ball</span>
+                </div>
+                <div class="bdpq-anchor-card anchor-d" id="anchor-card-d">
+                    <span class="anchor-letter">d</span>
+                    <span class="anchor-icon">🥁🥢</span>
+                    <span class="anchor-rule">Drum then Stick</span>
+                </div>
+                <div class="bdpq-anchor-card anchor-p" id="anchor-card-p">
+                    <span class="anchor-letter">p</span>
+                    <span class="anchor-icon">🍿🎈</span>
+                    <span class="anchor-rule">Popcorn Pop</span>
+                </div>
+                <div class="bdpq-anchor-card anchor-q" id="anchor-card-q">
+                    <span class="anchor-letter">q</span>
+                    <span class="anchor-icon">👑🪶</span>
+                    <span class="anchor-rule">Queen Tail Up</span>
+                </div>
+            </div>
+
+            <!-- Gentle Reversal Guidance Alert -->
+            <div id="reversal-hint-banner">
+                <span style="font-size: 26px;">💡</span>
+                <span id="reversal-hint-text">Remember: 'b' has the bat first 🏏, 'd' has the drum first 🥁!</span>
+            </div>
+
             <!-- Canvas for Splat and Sparkle FX -->
             <canvas id="fx-canvas"></canvas>
 
             <!-- Container where items drop -->
             <div id="falling-items-container"></div>
+
+            <!-- Large Touch Buttons for Mobile/Tablet in b/d/p/q mode -->
+            <div id="bdpq-touch-pad">
+                <button class="bdpq-touch-btn btn-b" id="btn-touch-b" onclick="handleKeyPressBlast('B')">
+                    <span class="btn-letter">b</span>
+                    <span class="btn-hint">🏏 Bat & Ball</span>
+                </button>
+                <button class="bdpq-touch-btn btn-d" id="btn-touch-d" onclick="handleKeyPressBlast('D')">
+                    <span class="btn-letter">d</span>
+                    <span class="btn-hint">🥁 Drum & Stick</span>
+                </button>
+                <button class="bdpq-touch-btn btn-p" id="btn-touch-p" onclick="handleKeyPressBlast('P')">
+                    <span class="btn-letter">p</span>
+                    <span class="btn-hint">🍿 Popcorn</span>
+                </button>
+                <button class="bdpq-touch-btn btn-q" id="btn-touch-q" onclick="handleKeyPressBlast('Q')">
+                    <span class="btn-letter">q</span>
+                    <span class="btn-hint">👑 Queen</span>
+                </button>
+            </div>
 
             <!-- Player Animal Character (Feed Mode) -->
             <div id="player-character">
@@ -1496,6 +1729,13 @@
                     <h2 id="overlay-title">🐒 Feed the Hungry Monkey!</h2>
                     <p id="overlay-desc">Catch sweet yellow bananas and fruits falling from the sky to feed your hungry
                         animal friend! Avoid rocks and wrong food!</p>
+
+                    <!-- Level Picker for b/d/p/q mode -->
+                    <div id="bdpq-level-picker">
+                        <button class="bdpq-lvl-btn active" id="btn-lvl-bd" onclick="setBdpqLevel('bd')">Level 1: b vs d (Horizontal)</button>
+                        <button class="bdpq-lvl-btn" id="btn-lvl-pq" onclick="setBdpqLevel('pq')">Level 2: p vs q (Vertical)</button>
+                        <button class="bdpq-lvl-btn" id="btn-lvl-all" onclick="setBdpqLevel('all')">Level 3: All 4 (b, d, p, q)</button>
+                    </div>
 
                     <!-- Animal Selection inside Hungry Mode -->
                     <div class="animal-select-bar" id="animal-picker">
@@ -2007,6 +2247,28 @@
             osc.stop(now + 0.18);
         }
 
+        // Synthesize soft, non-punishing chime for gentle reversal guidance
+        function playGentleHintSound() {
+            if (!isSoundEnabled) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            const now = ctx.currentTime;
+            const notes = [329.63, 261.63]; // E4 -> C4 soft descending bell
+            notes.forEach((freq, idx) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                const start = now + (idx * 0.12);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, start);
+                gain.gain.setValueAtTime(0.18, start);
+                gain.gain.exponentialRampToValueAtTime(0.001, start + 0.35);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(start);
+                osc.stop(start + 0.35);
+            });
+        }
+
         // Web Speech Synthesis (Speaks words, phonics, and praise)
         function speakText(text, pitchBoost = 1.25) {
             if (!isSoundEnabled || !('speechSynthesis' in window)) return;
@@ -2218,6 +2480,67 @@
             speakText(`You picked ${ANIMAL_PROFILES[animalKey].name}!`);
         }
 
+        /* b, d, p, q Targeted Reversal Configuration with Multi-Sensory Phonics */
+        const BDPQ_CONFIG = {
+            'B': {
+                char: 'b',
+                title: 'Bat then Ball',
+                anchorIcon: '🏏⚾',
+                rule: 'Straight line on left, ball on right!',
+                sound: '/b/! Bat and Ball! Letter b!',
+                color: '#00d2ff',
+                bgGrad: 'radial-gradient(circle at 30% 30%, #00d2ff, #0984e3)',
+                opposite: 'D',
+                oppositeHint: "Oops! That's 'd' for drum! Look: this letter has the BAT first — it's 'b' 🏏!"
+            },
+            'D': {
+                char: 'd',
+                title: 'Drum then Stick',
+                anchorIcon: '🥁🥢',
+                rule: 'Circle on left, stick on right!',
+                sound: '/d/! Drum and Stick! Letter d!',
+                color: '#ff9f43',
+                bgGrad: 'radial-gradient(circle at 30% 30%, #ff9f43, #e67e22)',
+                opposite: 'B',
+                oppositeHint: "Oops! That's 'b' for bat! Look: this letter has the DRUM first — it's 'd' 🥁!"
+            },
+            'P': {
+                char: 'p',
+                title: 'Popcorn Pop',
+                anchorIcon: '🍿🎈',
+                rule: 'Down into the ground, loop on top right!',
+                sound: '/p/! Popcorn Pop! Letter p!',
+                color: '#ff3366',
+                bgGrad: 'radial-gradient(circle at 30% 30%, #ff3366, #d63031)',
+                opposite: 'Q',
+                oppositeHint: "Oops! That's 'q' for queen! Look: the loop is on the right — it's 'p' 🍿!"
+            },
+            'Q': {
+                char: 'q',
+                title: 'Queen with Quilt',
+                anchorIcon: '👑🪶',
+                rule: 'Loop on top left, tail curls back!',
+                sound: '/kw/! Queen with Quilt! Letter q!',
+                color: '#a55eea',
+                bgGrad: 'radial-gradient(circle at 30% 30%, #a55eea, #8854d0)',
+                opposite: 'P',
+                oppositeHint: "Oops! That's 'p' for popcorn! Look: the tail curls up — it's 'q' 👑!"
+            }
+        };
+
+        let bdpqLevel = 'bd'; // 'bd', 'pq', 'all'
+
+        function setBdpqLevel(lvl) {
+            bdpqLevel = lvl;
+            document.querySelectorAll('.bdpq-lvl-btn').forEach(btn => btn.classList.remove('active'));
+            const target = document.getElementById(`btn-lvl-${lvl}`);
+            if (target) target.classList.add('active');
+            playPopSound();
+            if (lvl === 'bd') speakText("Level 1: Focus on b versus d!");
+            else if (lvl === 'pq') speakText("Level 2: Focus on p versus q!");
+            else speakText("Level 3: Master all 4 letters: b, d, p, and q!");
+        }
+
         // Mode Switching
         function switchMode(newMode) {
             currentMode = newMode;
@@ -2232,6 +2555,16 @@
             const hintBar = document.getElementById('controls-hint');
             const wordExplorerSection = document.getElementById('word-explorer-section');
             const tracingSection = document.getElementById('tracing-section');
+
+            // Reset bdpq mode elements
+            const bdpqHeader = document.getElementById('bdpq-anchor-header');
+            const bdpqTouch = document.getElementById('bdpq-touch-pad');
+            const bdpqLvl = document.getElementById('bdpq-level-picker');
+            const hintBanner = document.getElementById('reversal-hint-banner');
+            if (bdpqHeader) bdpqHeader.style.display = newMode === 'bdpq-focus' ? 'flex' : 'none';
+            if (bdpqTouch) bdpqTouch.style.display = newMode === 'bdpq-focus' ? 'flex' : 'none';
+            if (bdpqLvl) bdpqLvl.style.display = newMode === 'bdpq-focus' ? 'flex' : 'none';
+            if (hintBanner) hintBanner.style.display = 'none';
 
             if (newMode === 'letter-trace') {
                 arenaContainer.style.display = 'none';
@@ -2278,6 +2611,12 @@
                 overlayTitle.textContent = "🔤 Phonics Letter Blaster!";
                 overlayDesc.textContent = "Bouncy alphabet balloons drop from the sky! Press the matching letter on your keyboard or screen to blast them and hear the phonics sound!";
                 overlayPlayBtn.innerHTML = "<span>▶</span> BLAST LETTERS!";
+            } else if (newMode === 'bdpq-focus') {
+                playerEl.style.display = 'none';
+                animalPicker.style.display = 'none';
+                overlayTitle.textContent = "🎯 b / d / p / q Reversal Master!";
+                overlayDesc.textContent = "Master mirror letters without confusion! 'b' has the bat first 🏏, 'd' has the drum first 🥁, 'p' pops down 🍿, and 'q' curls up 👑. Press the matching key or tap below!";
+                overlayPlayBtn.innerHTML = "<span>▶</span> START REVERSAL FOCUS!";
             }
         }
 
@@ -2301,6 +2640,8 @@
                 speakText("Pop the fruits, moon and stars!");
             } else if (currentMode === 'letter-blast') {
                 speakText("Letter Blaster! Match the letters!");
+            } else if (currentMode === 'bdpq-focus') {
+                speakText("b d p q Reversal Mode! Look closely at the straight line and the circle!");
             }
 
             // Loops
@@ -2308,7 +2649,9 @@
             clearInterval(spawnLoopTimer);
 
             gameLoopTimer = setInterval(updatePhysics, 20);
-            const intervalTime = currentMode === 'hungry-animal' ? 1400 : 1300;
+            let intervalTime = 1300;
+            if (currentMode === 'hungry-animal') intervalTime = 1400;
+            else if (currentMode === 'bdpq-focus') intervalTime = 2200; // Progressive, low-stress pacing for literacy focus
             spawnLoopTimer = setInterval(spawnGameItem, intervalTime);
 
             resizeCanvas();
@@ -2438,6 +2781,36 @@
                     fullWordName: sampleWord ? sampleWord.word : ''
                 };
                 displayLetter = char;
+            } else if (currentMode === 'bdpq-focus') {
+                // Determine pool based on bdpqLevel ('bd', 'pq', 'all')
+                let pool = ['B', 'D'];
+                if (bdpqLevel === 'pq') pool = ['P', 'Q'];
+                else if (bdpqLevel === 'all') pool = ['B', 'D', 'P', 'Q'];
+
+                // Rule 1: Prevent mirror opposites from spawning simultaneously or side-by-side!
+                const activeChars = activeItems.map(it => it.firstChar);
+                let available = pool.filter(ch => {
+                    const opp = BDPQ_CONFIG[ch].opposite;
+                    return !activeChars.includes(opp) && !activeChars.includes(ch);
+                });
+
+                if (available.length === 0) {
+                    return; // Wait until current mirror letter is resolved
+                }
+
+                const charKey = available[Math.floor(Math.random() * available.length)];
+                const conf = BDPQ_CONFIG[charKey];
+
+                itemData = {
+                    id: conf.char,
+                    word: conf.char,
+                    emoji: conf.anchorIcon,
+                    phonics: conf.sound,
+                    isBdpq: true,
+                    conf: conf,
+                    charKey: charKey
+                };
+                displayLetter = conf.char;
             }
 
             // Create DOM Element
@@ -2446,7 +2819,16 @@
             el.style.left = xPos + 'px';
             el.style.top = '-80px';
 
-            if (currentMode === 'letter-blast') {
+            if (currentMode === 'bdpq-focus') {
+                el.innerHTML = `
+                    <div class="item-bubble" style="background: ${itemData.conf.bgGrad}; border: 3.5px solid ${itemData.conf.color}; color: #ffffff; font-size: 46px; font-weight: 900; box-shadow: 0 0 22px ${itemData.conf.color};">
+                        ${itemData.conf.char}
+                    </div>
+                    <div class="item-label" style="border-color: ${itemData.conf.color};">
+                        <span>${itemData.conf.anchorIcon}</span> ${itemData.conf.title}
+                    </div>
+                `;
+            } else if (currentMode === 'letter-blast') {
                 el.innerHTML = `
                     <div class="item-bubble" style="background: radial-gradient(circle at 30% 30%, #ff793f, #ff3366); border-color: #ffcc00; color: #fff; font-size: 38px; font-weight: 900;">
                         ${displayLetter}
@@ -2474,7 +2856,7 @@
 
             itemsContainer.appendChild(el);
 
-            const speed = 1.3 + Math.random() * 1.5;
+            const speed = currentMode === 'bdpq-focus' ? (1.0 + Math.random() * 0.3) : (1.3 + Math.random() * 1.5);
 
             activeItems.push({
                 element: el,
@@ -2482,7 +2864,7 @@
                 x: xPos,
                 y: -80,
                 speed: speed,
-                firstChar: itemData.word.charAt(0).toUpperCase()
+                firstChar: (itemData.charKey || itemData.word.charAt(0)).toUpperCase()
             });
         }
 
@@ -2516,8 +2898,18 @@
                     it.element.remove();
                     activeItems.splice(i, 1);
 
-                    // If favorite food missed in Hungry mode or missed in letter blaster
-                    if (currentMode === 'hungry-animal') {
+                    if (currentMode === 'bdpq-focus') {
+                        // Gentle miss feedback in reversal mode
+                        playGentleHintSound();
+                        lives--;
+                        combo = 0;
+                        updateHUD();
+                        speakText(`That was letter ${it.data.conf.char}! ${it.data.conf.title}!`);
+                        if (lives <= 0) {
+                            triggerGameOver();
+                            return;
+                        }
+                    } else if (currentMode === 'hungry-animal') {
                         const profile = ANIMAL_PROFILES[currentAnimal];
                         if (profile.favs.includes(it.data.id)) {
                             // Gentle miss feedback
@@ -2619,15 +3011,33 @@
 
             playPopSound();
             playChimeSound();
-            spawnJuiceParticles(itemX, itemY, '#ff3366');
 
-            showFloatingAnnouncement(itemX, itemY, `${data.word}!`);
+            const particleColor = (data.conf && data.conf.color) ? data.conf.color : '#ff3366';
+            spawnJuiceParticles(itemX, itemY, particleColor);
 
-            // Pronounce word and spell out phonics
-            if (data.isLetterOnly) {
+            // Hide reversal guidance alert if active
+            const hintBanner = document.getElementById('reversal-hint-banner');
+            if (hintBanner) hintBanner.style.display = 'none';
+
+            // Remove guidance outline from touch buttons
+            document.querySelectorAll('.bdpq-touch-btn').forEach(btn => btn.classList.remove('highlight-guide'));
+
+            // Multi-sensory phonics & visual confirmation cues
+            if (data.isBdpq) {
+                // Glow matching visual anchor card at top
+                const anchorCard = document.getElementById(`anchor-card-${data.conf.char}`);
+                if (anchorCard) {
+                    anchorCard.classList.add('active-anchor');
+                    setTimeout(() => anchorCard.classList.remove('active-anchor'), 1200);
+                }
+
+                showFloatingAnnouncement(itemX, itemY, `${data.conf.char} • ${data.conf.title}!`);
+                speakText(data.conf.sound);
+            } else if (data.isLetterOnly) {
+                showFloatingAnnouncement(itemX, itemY, `${data.word}!`);
                 speakText(`Letter ${data.word}! ${data.fullWordName ? 'as in ' + data.fullWordName : ''}`);
             } else {
-                // e.g. "Banana! B-A-N-A-N-A!"
+                showFloatingAnnouncement(itemX, itemY, `${data.word}!`);
                 const spelled = data.word.toUpperCase().split('').join(' - ');
                 speakText(`${data.word}! ${spelled}!`);
             }
@@ -2651,6 +3061,40 @@
             if (targetIdx !== -1) {
                 const target = activeItems[targetIdx];
                 popItem(target.element, target.data, false);
+            } else if (currentMode === 'bdpq-focus') {
+                // Progressive Pacing & Low-Stress Reversal Guidance:
+                // Check if the child confused the falling letter with its mirror counterpart
+                const target = activeItems[0];
+                if (target && target.data && target.data.conf) {
+                    const opp = target.data.conf.opposite;
+                    if (letter === opp) {
+                        // Reversal confusion detected! (e.g. pressed 'd' when 'b' is on screen)
+                        playGentleHintSound();
+                        combo = 0;
+                        lives--;
+                        updateHUD();
+
+                        const banner = document.getElementById('reversal-hint-banner');
+                        const hintText = document.getElementById('reversal-hint-text');
+                        if (banner && hintText) {
+                            hintText.textContent = target.data.conf.oppositeHint;
+                            banner.style.display = 'flex';
+                        }
+
+                        // Visually highlight the correct touch button with golden glow
+                        const correctBtn = document.getElementById(`btn-touch-${target.data.conf.char}`);
+                        if (correctBtn) {
+                            correctBtn.classList.add('highlight-guide');
+                        }
+
+                        // Gentle, supportive voice prompt
+                        speakText(target.data.conf.oppositeHint);
+
+                        if (lives <= 0) {
+                            triggerGameOver();
+                        }
+                    }
+                }
             }
         }
 
